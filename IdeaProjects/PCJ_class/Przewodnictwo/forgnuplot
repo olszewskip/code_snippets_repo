@@ -1,0 +1,7 @@
+set palette rgbformula -7,2,-7
+set cbrange [20:27]
+set cblabel "Temperature"
+unset cbtics
+set view map
+splot "out.txt" matrix with image
+
