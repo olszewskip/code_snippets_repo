@@ -3,6 +3,9 @@ from mpi4py import MPI
 import numpy as np
 
 comm = MPI.COMM_WORLD
+comm.Barrier()
+time0 = MPI.Wtime()
+
 rank = comm.Get_rank()
 size = comm.Get_size()
 
@@ -25,8 +28,9 @@ else:
     y_recvbuf = None
 
 comm.Gather(y_sendbuf, y_recvbuf, root=0)
-    
-print("s", rank, A_sendbuf)
-print("r", rank, A_recvbuf)
-print("x", rank, x)
-print("y", rank, y_recvbuf)
+
+comm.Barrier()
+time1 = MPI.Wtime()
+
+print(f"{rank})", "y =", y_recvbuf)
+print(f"{rank})", f"Finished in {time1 - time0} sec.")
