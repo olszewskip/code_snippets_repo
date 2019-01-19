@@ -7,10 +7,10 @@ time0 = MPI.Wtime()
 size = comm.Get_size()
 rank = comm.Get_rank()
 
-n = 1024 * 4
+n = 2**22
 m = 10
-dtype1 = 'int16'
-dtype2 = 'int8'
+dtype1 = 'int8'
+dtype2 = 'int32'
 
 if n % size != 0:
     raise ValueError()
@@ -45,4 +45,4 @@ comm.Reduce(B_sendbuf, B_recvbuf, op=MPI.SUM, root=0)
 if rank == 0:
     print(B_recvbuf)
     time1 = MPI.Wtime()
-    print(f"n={size}. Finished in {round(time1-time0, 4)} sec.")
+    print("n={size}. Finished in {time_diff} sec.".format(size=size, time_diff=round(time1-time0, 4)))

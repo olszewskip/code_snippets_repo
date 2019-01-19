@@ -1,5 +1,6 @@
 from mpi4py import MPI
 import numpy as np
+np.random.seed(123)
 
 comm = MPI.COMM_WORLD
 comm.Barrier()
@@ -7,8 +8,8 @@ time0 = MPI.Wtime()
 size = comm.Get_size()
 rank = comm.Get_rank()
 
-n = 1048576
-dtype = 'float32'
+n = 2**24 # 2**10
+dtype = 'float64'
 
 if n % size != 0:
     raise ValueError()
@@ -40,6 +41,6 @@ comm.Reduce(part_dotproduct, dotproduct, op=MPI.SUM, root=0)
 # Print the result to screen
 # Stop the timer
 if rank == 0:
-    print(f"The dot product equals {dotproduct[0]}")
+    print("The dot product equals {}".format(dotproduct[0]))
     time1 = MPI.Wtime()
-    print(f"n={size}. Finished in {round(time1-time0, 4)} sec.")
+    print("n={size}. Finished in {time_diff} sec.".format(size=size, time_diff=round(time1-time0, 4)))
